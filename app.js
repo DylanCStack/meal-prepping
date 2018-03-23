@@ -4,6 +4,7 @@ const favicon = require('serve-favicon');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
+const db = require('./db/db');
 
 const apiRouter = require('./routes/api');
 
@@ -24,6 +25,13 @@ app.use('/api', apiRouter);
 
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname+'/client/build/index.html'));
+});
+
+db.connect(function(err) {
+  if (err) {
+    console.log('Unable to connect to Mongo.')
+    process.exit(1)
+  }
 });
 
 // catch 404 and forward to error handler
