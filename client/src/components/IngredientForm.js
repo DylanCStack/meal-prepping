@@ -26,7 +26,7 @@ export class IngredientForm extends React.Component {
         <label> Name
           <input type='text' value={this.state.name} onChange={this.handleChange}/>
         </label>
-        <input type='submit' value="Submit"/>
+        <input type='submit' value="Submit" disabled={this.state.name===''? true : false} />
       </form>
     );
   }

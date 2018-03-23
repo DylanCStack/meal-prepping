@@ -27,6 +27,14 @@ class App extends Component {
     let ingredients = this.state.ingredients;
 
     ingredients.push(ingredient);
+    axios.post('/api/ingredient', {
+        name: ingredient.name
+      })
+      .then(res => {
+
+      }).catch(err => {
+        console.log(err);
+      })
     this.setState({
       ingredients
     });
