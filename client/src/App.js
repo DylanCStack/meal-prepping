@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 import './styles/App.css';
 
 import { IngredientList } from './components/IngredientList.js';
@@ -11,9 +12,18 @@ class App extends Component {
       ingredients: [],
     }
 
-    this.addIngredient = this.addIngredient.bind(this);
+    this.createIngredient = this.createIngredient.bind(this);
   }
-  addIngredient(ingredient) {
+  componentDidMount() {
+    axios.get('/api/ingredients')
+      .then(res => {
+        
+        this.setState({ingredients: res.data.ingredients})
+      }).catch(err => {
+        console.log(err);
+      });
+  }
+  createIngredient(ingredient) {
     let ingredients = this.state.ingredients;
 
     ingredients.push(ingredient);
@@ -25,7 +35,7 @@ class App extends Component {
     return (
       <div className="App">
         <h1>Home</h1>
-        <IngredientForm createIngredient={this.addIngredient}/>
+        <IngredientForm createIngredient={this.createIngredient}/>
         <IngredientList ingredients={this.state.ingredients}/>
       </div>
     );
