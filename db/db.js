@@ -4,12 +4,13 @@ const secret = require('./secret.js');
 const state = {
   db: null,
 };
+
 exports.connect = function(done) {
   if (state.db) return done();
-  MongoClient.connect(secret.dbURL, (err, db) => {
+  MongoClient.connect(secret.dbURL, (err, client) => {
     console.log('Database Connected');
     if(err) return doNotTrack(err);
-    state.db = db
+    state.db = client.db('meal-prepping');
     done();
   });
 }

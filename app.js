@@ -10,6 +10,8 @@ const apiRouter = require('./routes/api');
 
 const app = express();
 
+app.set('view engine', 'jade');
+
 // Serve static files from the React app
 app.use(express.static(path.join(__dirname, 'client/build')));
 
@@ -21,17 +23,17 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/api', apiRouter);
-
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname+'/client/build/index.html'));
-});
-
 db.connect(function(err) {
   if (err) {
     console.log('Unable to connect to Mongo.')
     process.exit(1)
   }
+});
+
+app.use('/api', apiRouter);
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname+'/client/build/index.html'));
 });
 
 // catch 404 and forward to error handler
@@ -47,7 +49,7 @@ app.use(function(err, req, res, next) {
 
   // render the error page
   res.status(err.status || 500);
-  res.render('error');
+  //res.render('error');
 });
 
 module.exports = app;
