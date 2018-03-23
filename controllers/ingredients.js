@@ -12,3 +12,13 @@ exports.getAll = function(done) {
     done(null, docs);
   });
 }
+
+exports.create = function(ingredient, done) {
+  const collection = db.get().collection('ingredients');
+  
+  collection.insertOne(ingredient, function(err, res) {
+    if (err) return done(err, null);
+
+    return done(null, `${ingredient.name} added`);
+  });  
+}
