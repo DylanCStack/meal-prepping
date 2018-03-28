@@ -31,7 +31,7 @@ class App extends Component {
     let ingredients = this.state.ingredients;
 
     ingredients.push(ingredient);
-    axios.post('/api/ingredient', {
+    axios.post('/api/ingredients/add', {
         name: ingredient.name
       })
       .then(res => {

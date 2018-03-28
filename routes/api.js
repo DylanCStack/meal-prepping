@@ -1,30 +1,10 @@
 const express = require('express');
 const router = express.Router();
 
-const IngredientsController = require('../controllers/ingredients.js');
+const ingredientsRouter = require('./ingredients');
+const recipesRouter = require('./recipes');
 
-router.get('/ingredients', function(req, res, next) {
-	IngredientsController.getAll(function(err, ingredients) {
-    if (err) return res.json({
-      error: err,
-    });
-     res.json({
-      ingredients,
-    });
-  });
-});
-
-router.post('/ingredient', function(req, res, next) {
-  IngredientsController.create(req.body, function(err, response) {
-    if (err) return res.json({
-      error: err,
-    });
-    
-    res.json({
-      error: err,
-      response,
-    });
-  });
-})
+router.use('/ingredients', ingredientsRouter);
+router.use('/recipes', recipesRouter);
 
 module.exports = router;
