@@ -26,6 +26,13 @@ class App extends Component {
       }).catch(err => {
         console.log(err);
       });
+    axios.get('/api/recipes')
+      .then(res => {
+        
+        this.setState({recipes: res.data.recipes})
+      }).catch(err => {
+        console.log(err);
+      });
   }
   createIngredient(ingredient) {
     let ingredients = this.state.ingredients;
@@ -47,7 +54,7 @@ class App extends Component {
     let recipes = this.state.recipes;
 
     recipes.push(recipe);
-    axios.post('/api/recipie', {
+    axios.post('/api/recipes/add', {
         title: recipe.title
       })
       .then(res => {

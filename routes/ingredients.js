@@ -8,7 +8,7 @@ router.get('/', function(req, res, next) {
     if (err) return res.json({
       error: err,
     });
-     res.json({
+    res.json({
       ingredients,
     });
   });
