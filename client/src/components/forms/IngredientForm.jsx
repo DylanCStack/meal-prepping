@@ -1,6 +1,6 @@
 import React from 'react';
 import HOCForm from './HOCForm';
-import ControlledText from '../inputs/ControlledText';
+import TextInput from './inputs/TextInput';
 
 class IngredientForm extends React.Component {
   constructor(props) {
@@ -23,7 +23,7 @@ class IngredientForm extends React.Component {
     return(
       <form onSubmit={this.handleSubmit}>
         <label> Name
-          <ControlledText value={this.state.name} handleChange={this.handleChange} property='name'/>
+          <TextInput value={this.state.name} handleChange={this.handleChange} property='name'/>
         </label>
         <input type='submit' value="Submit" disabled={this.state.name===''? true : false} />
       </form>
