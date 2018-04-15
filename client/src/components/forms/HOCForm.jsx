@@ -14,7 +14,6 @@ export default function HOCForm(WrappedForm) {
     }
 
     render() {
-      WrappedForm.handleChange = this.handleChange.bind(WrappedForm);
       return (
         <WrappedForm {...this.state} {...this.props} handleChange={this.handleChange}/>
       )

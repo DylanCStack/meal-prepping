@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import './styles/App.css';
 
-import { IngredientList } from './components/IngredientList';
+import IngredientList from './components/IngredientList';
 import IngredientForm from './components/forms/IngredientForm';
-import { RecipeList } from './components/RecipeList';
+import RecipeList from './components/RecipeList';
 import RecipeForm from './components/forms/RecipeForm';
 
 class App extends Component {

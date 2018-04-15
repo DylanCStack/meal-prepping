@@ -1,6 +1,6 @@
 import React from 'react';
 
-export class RecipeList extends React.Component {
+export default class RecipeList extends React.Component {
   constructor(props) {
     super(props);
 
