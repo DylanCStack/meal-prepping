@@ -1,4 +1,5 @@
 import React from 'react';
+import ControlledText from './inputs/ControlledText';
 
 export class RecipeForm extends React.Component {
   constructor(props){
@@ -10,10 +11,10 @@ export class RecipeForm extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
-  handleChange(event) {
-    this.setState({
-      title: event.target.value
-    });
+  handleChange(property, event) {
+    let newState = this.state;
+    newState[property] = event.target.value;
+    this.setState(newState);
   }
   handleSubmit(event) {
     event.preventDefault();
@@ -26,7 +27,7 @@ export class RecipeForm extends React.Component {
     return (
       <form onSubmit={this.handleSubmit}>
         <label> Title
-        <input type='text' value={this.state.title} onChange={this.handleChange}/></label>
+        <ControlledText value={this.state.title} handleChange={this.handleChange} property='title'/></label>
         <input type='submit' value='Submit' disabled={this.state.title===''? true : false}/>
       </form>
     );
