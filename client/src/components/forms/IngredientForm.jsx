@@ -1,6 +1,5 @@
 import React from 'react';
 import HOCForm from './HOCForm';
-import ControlledSelect from '../inputs/ControlledSelect';
 import ControlledText from '../inputs/ControlledText';
 
 class IngredientForm extends React.Component {

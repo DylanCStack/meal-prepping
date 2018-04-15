@@ -1,6 +1,7 @@
 import React from 'react';
 import HOCForm from './HOCForm';
 import ControlledText from '../inputs/ControlledText';
+import IngredientInput from '../inputs/IngredientInput';
 
 class RecipeForm extends React.Component {
   constructor(props){
@@ -9,13 +10,8 @@ class RecipeForm extends React.Component {
       title: '',
     }
 
-    this.handleChange = this.handleChange.bind(this);
+    this.handleChange = this.props.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-  }
-  handleChange(property, event) {
-    let newState = this.state;
-    newState[property] = event.target.value;
-    this.setState(newState);
   }
   handleSubmit(event) {
     event.preventDefault();
@@ -29,6 +25,7 @@ class RecipeForm extends React.Component {
       <form onSubmit={this.handleSubmit}>
         <label> Title
         <ControlledText value={this.state.title} handleChange={this.handleChange} property='title'/></label>
+        <IngredientInput/>
         <input type='submit' value='Submit' disabled={this.state.title===''? true : false}/>
       </form>
     );
