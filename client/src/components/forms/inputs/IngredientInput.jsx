@@ -117,7 +117,7 @@ class IngredientInput extends React.Component {
           {this.renderIngredients()}
         </div>
         <TextInput value={this.state.activeInput} handleChange={this.handleChange} property='activeInput'/>
-        <NumberInput value={this.state.activeQuantity} handleChange={this.handleChange} property='activeQuantity' decimal={true}/>
+        <NumberInput value={this.state.activeQuantity} handleChange={this.handleChange} property='activeQuantity' step={'0.1'}/>
         <SelectInput value={unit} options={options} handleChange={this.handleChange} property='selectedUnit'/>
         <input type='button' value='+' onClick={this.addIngredient}/>
       </div>
