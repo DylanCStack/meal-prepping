@@ -1,8 +1,9 @@
 import React from 'react';
 import axios from 'axios';
-import HOCForm from '../forms/HOCForm';
+import HOCForm from '../HOCForm';
 import ControlledSelect from './ControlledSelect';
 import ControlledText from './ControlledText';
+import ControlledNumber from './ControlledNumber';
 
 class IngredientInput extends React.Component {
   constructor(props) {
@@ -115,7 +116,7 @@ class IngredientInput extends React.Component {
           {this.renderIngredients()}
         </div>
         <ControlledText value={this.state.activeInput} handleChange={this.handleChange} property='activeInput'/>
-        {/*add number input component*/}
+        <ControlledNumber value={this.state.activeQuantty} handleChange={this.handleChange} property='activeQuantity'/>
         <ControlledSelect value={unit} options={options} handleChange={this.handleChange} property='selectedUnit'/>
         <input type='button' value='+' onClick={this.addIngredient}/>
       </div>
