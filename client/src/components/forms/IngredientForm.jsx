@@ -1,21 +1,17 @@
 import React from 'react';
-import ControlledSelect from './inputs/ControlledSelect';
-import ControlledText from './inputs/ControlledText';
+import HOCForm from './HOCForm';
+import ControlledSelect from '../inputs/ControlledSelect';
+import ControlledText from '../inputs/ControlledText';
 
-export class IngredientForm extends React.Component {
+class IngredientForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       name: '',
     }
 
-    this.handleChange = this.handleChange.bind(this);
+    this.handleChange = this.props.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-  }
-  handleChange(property, event) {
-    let newState = this.state;
-    newState[property] = event.target.value;
-    this.setState(newState);
   }
   handleSubmit(event) {
     event.preventDefault();
@@ -35,3 +31,5 @@ export class IngredientForm extends React.Component {
     );
   }
 }
+
+export default HOCForm(IngredientForm);

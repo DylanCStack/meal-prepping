@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import './styles/App.css';
 
-import { IngredientList } from './components/IngredientList.js';
-import { IngredientForm } from './components/IngredientForm.js';
-import { RecipeList } from './components/RecipeList.js';
-import { RecipeForm } from './components/RecipeForm.js';
+import { IngredientList } from './components/IngredientList';
+import IngredientForm from './components/forms/IngredientForm';
+import { RecipeList } from './components/RecipeList';
+import RecipeForm from './components/forms/RecipeForm';
 
 class App extends Component {
   constructor(props) {

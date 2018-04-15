@@ -1,7 +1,8 @@
 import React from 'react';
-import ControlledText from './inputs/ControlledText';
+import HOCForm from './HOCForm';
+import ControlledText from '../inputs/ControlledText';
 
-export class RecipeForm extends React.Component {
+class RecipeForm extends React.Component {
   constructor(props){
     super(props);
     this.state = {
@@ -33,3 +34,5 @@ export class RecipeForm extends React.Component {
     );
   }
 }
+
+export default HOCForm(RecipeForm);
