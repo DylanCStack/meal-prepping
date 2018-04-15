@@ -19,3 +19,12 @@ exports.create = function(ingredient, done) {
     return done(null, `${ingredient.name} added`);
   });  
 }
+
+exports.getSuggestions = function(query, done) {
+  const regexp = new RegExp(`/^${query}/i`);
+  collection().find({'name': {'$regex' : `^${query}`, '$options' : 'i'}}).toArray(function(err, docs) {
+    if (err) return done(err, null);
+
+    done(null, docs);
+  });
+}

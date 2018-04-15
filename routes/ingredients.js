@@ -27,4 +27,17 @@ router.post('/add', function(req, res, next) {
   });
 })
 
+router.get('/suggestions', function(req, res, next) {
+  IngredientsController.getSuggestions(req.query.i, function(err, suggestions) {
+    if (err) return res.json({
+      error: err,
+    });
+    
+    res.json({
+      error: err,
+      suggestions
+    })
+  });
+});
+
 module.exports = router;
