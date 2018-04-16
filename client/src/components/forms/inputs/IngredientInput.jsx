@@ -94,7 +94,6 @@ class IngredientInput extends React.Component {
     this.fetchSuggestions();
   }
   handleFocus(bool, e) {
-    console.log(bool);
     this.setState({showSuggestions: bool});
   }
   fetchSuggestions() {
@@ -106,31 +105,34 @@ class IngredientInput extends React.Component {
         console.log(err);
       });
   }
-  handleSuggestions(e) {
+  handleSuggestions(e, i) {
     let newState = this.state;
     let focus = this.state.suggestionFocus;
     const suggestions = this.state.suggestions;
-
-    switch(e.key) {
-      case 'ArrowUp':// move focus up by one
-        newState.suggestionFocus = (focus-1+suggestions.length)%suggestions.length;
-        newState.activeInput = suggestions[newState.suggestionFocus].name;
-        break;
-
-      case 'ArrowDown':// move focus down by one
-        newState.suggestionFocus = (focus+1)%suggestions.length;
-        newState.activeInput = suggestions[newState.suggestionFocus].name;
-        break;
-
-      case 'Enter':// add selected suggestion to recipe
-        e.preventDefault();// prevent form from submitting
-        console.log(suggestions)
-        this.setState({activeInput: suggestions[focus].name});
-        this.addIngredient(suggestions[focus].name);
-        break;
-
-      default:
-        break;
+    if (e.type ==='mouseenter') {
+      newState.suggestionFocus = i;
+      newState.activeInput = suggestions[newState.suggestionFocus].name;      
+    } else {// else event type is keydown
+      switch(e.key) {
+        case 'ArrowUp':// move focus up by one
+          newState.suggestionFocus = (focus-1+suggestions.length)%suggestions.length;
+          newState.activeInput = suggestions[newState.suggestionFocus].name;
+          break;
+  
+        case 'ArrowDown':// move focus down by one
+          newState.suggestionFocus = (focus+1)%suggestions.length;
+          newState.activeInput = suggestions[newState.suggestionFocus].name;
+          break;
+  
+        case 'Enter':// add selected suggestion to recipe
+          e.preventDefault();// prevent form from submitting
+          this.setState({activeInput: suggestions[focus].name});
+          this.addIngredient(suggestions[focus].name);
+          break;
+  
+        default:
+          break;
+      }
     }
     this.setState(newState);
   }
@@ -140,7 +142,6 @@ class IngredientInput extends React.Component {
       quantity: this.state.activeQuantity,
       unit: this.state.selectedUnit,
     };
-    console.log(newIngredient)
     this.props.addIngredient(newIngredient);
   }
   removeIngredient(ingredientToRemove) {
@@ -195,7 +196,7 @@ class IngredientInput extends React.Component {
       output = (// TODO add click handler to add suggestion to recipe
         <div className='suggestions'>{suggestions.map((suggestion, i) => {
             return (
-              <div className={'suggestion' + ((i === focus) ? ' active' : '')} key={i} onMouseEnter={() => this.setState({suggestionFocus: i})}>
+              <div className={'suggestion' + ((i === focus) ? ' active' : '')} key={i} onMouseEnter={e=>this.handleSuggestions(e, i)}>
                 <p>{suggestion.name}</p>
                 <input type='hidden' value={suggestion.id}/>
               </div>

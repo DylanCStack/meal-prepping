@@ -34,7 +34,6 @@ class RecipeForm extends React.Component {
   }
   removeIngredient(ingredientToRemove) {
     let newState = this.state;
-    console.log("called it")
     newState.ingredients = this.state.ingredients.filter(ingredient => ingredient != ingredientToRemove);
     this.setState(newState);
   }
