@@ -94,6 +94,7 @@ class IngredientInput extends React.Component {
     this.fetchSuggestions();
   }
   handleFocus(bool, e) {
+    console.log(bool);
     this.setState({showSuggestions: bool});
   }
   fetchSuggestions() {
@@ -152,6 +153,11 @@ class IngredientInput extends React.Component {
   render() {
     const options = this.state.unitOptions;
     const unit = this.state.selectedUnit;
+    const nameEvents = {
+      onKeyDown: this.handleSuggestions,
+      onFocus: (e)=>this.handleFocus(true,e),
+      onBlur: (e)=>this.handleFocus(false,e),
+    };
 
     return (
       <div className='ingredientInput'>
@@ -160,7 +166,7 @@ class IngredientInput extends React.Component {
         </div>
         <div className='nameInput'>
           <label>Add ingredient:
-          <TextInput value={this.state.activeInput} handleChange={this.handleName} events={{onKeyDown: this.handleSuggestions, blur: this.handleFocus}} property='activeInput'/></label>
+          <TextInput value={this.state.activeInput} handleChange={this.handleName} events={nameEvents} property='activeInput'/></label>
           {this.renderSuggestions()}
         </div>
         <NumberInput value={this.state.activeQuantity} handleChange={this.handleChange} property='activeQuantity' step={'0.1'}/>
