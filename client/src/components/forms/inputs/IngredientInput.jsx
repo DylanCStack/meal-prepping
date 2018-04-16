@@ -114,16 +114,19 @@ class IngredientInput extends React.Component {
     switch(e.key) {
       case 'ArrowUp':// move focus up by one
         newState.suggestionFocus = (focus-1+suggestions.length)%suggestions.length;
+        newState.activeInput = suggestions[newState.suggestionFocus].name;
         break;
 
       case 'ArrowDown':// move focus down by one
         newState.suggestionFocus = (focus+1)%suggestions.length;
+        newState.activeInput = suggestions[newState.suggestionFocus].name;
         break;
 
       case 'Enter':// add selected suggestion to recipe
         e.preventDefault();// prevent form from submitting
-        this.setState({activeInput: suggestions[focus]});
-        this.addIngredient();
+        console.log(suggestions)
+        this.setState({activeInput: suggestions[focus].name});
+        this.addIngredient(suggestions[focus].name);
         break;
 
       default:
@@ -132,23 +135,16 @@ class IngredientInput extends React.Component {
     this.setState(newState);
   }
   addIngredient() {
-    let newState = this.state;
-
     let newIngredient = {
       name: this.state.activeInput,
       quantity: this.state.activeQuantity,
       unit: this.state.selectedUnit,
     };
-    if(this.state.ingredients.filter(ingredient => {return ingredient.name == newIngredient.name})){
-      newState.ingredients.push(newIngredient);
-      this.setState(newState);  
-    }
+    console.log(newIngredient)
+    this.props.addIngredient(newIngredient);
   }
   removeIngredient(ingredientToRemove) {
-    let newState = this.state;
-
-    newState.ingredients = this.state.ingredients.filter(ingredient => ingredient != ingredientToRemove);
-    this.setState(newState);
+    this.props.removeIngredient(ingredientToRemove);
   }
   render() {
     const options = this.state.unitOptions;
@@ -178,10 +174,12 @@ class IngredientInput extends React.Component {
   renderIngredients() {
     const output = [];
 
-    this.state.ingredients.forEach(ingredient => {
+    this.props.ingredients.forEach(ingredient => {
       output.push(
         <div className='ingredient' key={ingredient.name}>
-          <p>{ingredient.name} {ingredient.quantity} {ingredient.unit}</p>
+          <p>{ingredient.name} 
+          {ingredient.quantity} 
+          {ingredient.unit}</p>
           <input type='button' value='-' onClick={this.removeIngredient.bind(this, ingredient)}/>
         </div>
       );
