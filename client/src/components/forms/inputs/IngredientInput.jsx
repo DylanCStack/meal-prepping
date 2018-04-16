@@ -73,10 +73,12 @@ class IngredientInput extends React.Component {
       activeQuantity: 0,
       suggestions: [],
       suggestionFocus: 0,
+      showSuggestions: true,
       ingredients: [],
     };
     this.handleChange = this.props.handleChange.bind(this);
     this.handleName = this.handleName.bind(this);
+    this.handleFocus = this.handleFocus.bind(this);
 
     this.addIngredient = this.addIngredient.bind(this);
     this.remvoeIngredient = this.removeIngredient.bind(this);
@@ -90,6 +92,9 @@ class IngredientInput extends React.Component {
     this.handleChange(property, e);
 
     this.fetchSuggestions();
+  }
+  handleFocus(bool, e) {
+    this.setState({showSuggestions: bool});
   }
   fetchSuggestions() {
     axios.get(`/api/ingredients/suggestions?i=${this.state.activeInput}`)
@@ -155,7 +160,7 @@ class IngredientInput extends React.Component {
         </div>
         <div className='nameInput'>
           <label>Add ingredient:
-          <TextInput value={this.state.activeInput} handleChange={this.handleName} events={{onKeyDown: this.handleSuggestions}} property='activeInput'/></label>
+          <TextInput value={this.state.activeInput} handleChange={this.handleName} events={{onKeyDown: this.handleSuggestions, blur: this.handleFocus}} property='activeInput'/></label>
           {this.renderSuggestions()}
         </div>
         <NumberInput value={this.state.activeQuantity} handleChange={this.handleChange} property='activeQuantity' step={'0.1'}/>
@@ -180,20 +185,23 @@ class IngredientInput extends React.Component {
   renderSuggestions() {
     const suggestions = this.state.suggestions;
     const focus = this.state.suggestionFocus;
+    let output;
 
-    const output = (// add click handler to add suggestion to recipe
-      <div className='suggestions'>{suggestions.map((suggestion, i) => {
-          return (
-            <div className={'suggestion' + ((i === focus) ? ' active' : '')} key={i} onMouseEnter={() => this.setState({suggestionFocus: i})}>
-              <p>{suggestion.name}</p>
-              <input type='hidden' value={suggestion.id}/>
-            </div>
-          )
-        })}
-      </div>
-    )
+    if (suggestions.length !== 0 && this.state.showSuggestions) {
+      output = (// TODO add click handler to add suggestion to recipe
+        <div className='suggestions'>{suggestions.map((suggestion, i) => {
+            return (
+              <div className={'suggestion' + ((i === focus) ? ' active' : '')} key={i} onMouseEnter={() => this.setState({suggestionFocus: i})}>
+                <p>{suggestion.name}</p>
+                <input type='hidden' value={suggestion.id}/>
+              </div>
+            )
+          })}
+        </div>
+      )
+    }
     return output
   }
 }
 
-export default HOCForm(IngredientInput);
+export default HOCForm(IngredientInput);// inherits handleChange from HOCForm, will likely inherit handleSubmit once available. 
