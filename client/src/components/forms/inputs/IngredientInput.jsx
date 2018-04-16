@@ -93,10 +93,12 @@ class IngredientInput extends React.Component {
 
     this.fetchSuggestions();
   }
-  handleFocus(bool, e) {
+
+  handleFocus(bool, e) {// hides and shows suggestions when nameInput gains or loses focus
     this.setState({showSuggestions: bool});
   }
-  fetchSuggestions() {
+
+  fetchSuggestions() {// fetch a list of suggested ingredients whose names start with the inputted characters
     axios.get(`/api/ingredients/suggestions?i=${this.state.activeInput}`)
       .then(res => {
         this.setState({suggestions: res.data.suggestions});
@@ -105,10 +107,12 @@ class IngredientInput extends React.Component {
         console.log(err);
       });
   }
-  handleSuggestions(e, i) {
+
+  handleSuggestions(e, i) {// handles navigation of suggestions list w/mouse or keyboard input
     let newState = this.state;
     let focus = this.state.suggestionFocus;
     const suggestions = this.state.suggestions;
+
     if (e.type ==='mouseenter') {
       newState.suggestionFocus = i;
       newState.activeInput = suggestions[newState.suggestionFocus].name;      
@@ -136,7 +140,8 @@ class IngredientInput extends React.Component {
     }
     this.setState(newState);
   }
-  addIngredient() {
+
+  addIngredient() {// assembles ingredient object and pushes it to parent form
     let newIngredient = {
       name: this.state.activeInput,
       quantity: this.state.activeQuantity,
@@ -144,9 +149,10 @@ class IngredientInput extends React.Component {
     };
     this.props.addIngredient(newIngredient);
   }
-  removeIngredient(ingredientToRemove) {
+  removeIngredient(ingredientToRemove) {// unnecessary. Here because addIngredient is here
     this.props.removeIngredient(ingredientToRemove);
   }
+
   render() {
     const options = this.state.unitOptions;
     const unit = this.state.selectedUnit;
@@ -172,6 +178,7 @@ class IngredientInput extends React.Component {
       </div>
     )
   }
+
   renderIngredients() {
     const output = [];
 
@@ -187,6 +194,7 @@ class IngredientInput extends React.Component {
     });
     return output;
   }
+
   renderSuggestions() {
     const suggestions = this.state.suggestions;
     const focus = this.state.suggestionFocus;
