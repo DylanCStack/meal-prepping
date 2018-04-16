@@ -1,5 +1,7 @@
 import React from 'react';
 import axios from 'axios';
+import _ from 'lodash';
+
 import HOCForm from '../HOCForm';
 import SelectInput from './SelectInput';
 import TextInput from './TextInput';
@@ -70,16 +72,27 @@ class IngredientInput extends React.Component {
       activeInput: '',
       activeQuantity: 0,
       suggestions: [],
+      suggestionFocus: 0,
       ingredients: [],
     };
     this.handleChange = this.props.handleChange.bind(this);
+    this.handleName = this.handleName.bind(this);
+
     this.addIngredient = this.addIngredient.bind(this);
     this.remvoeIngredient = this.removeIngredient.bind(this);
-    this.fetchSuggestions = this.fetchSuggestions.bind(this);
+    this.fetchSuggestions = _.debounce(this.fetchSuggestions.bind(this), 200);
+    this.handleSuggestions = this.handleSuggestions.bind(this);
+
     this.renderIngredients = this.renderIngredients.bind(this);
+    this.renderSuggestions = this.renderSuggestions.bind(this);
+  }
+  handleName(property, e) {
+    this.handleChange(property, e);
+
+    this.fetchSuggestions();
   }
   fetchSuggestions() {
-    axios.get('/api/ingredients/suggestions')
+    axios.get(`/api/ingredients/suggestions?i=${this.state.activeInput}`)
       .then(res => {
         this.setState({suggestions: res.data.suggestions});
       })
@@ -87,16 +100,40 @@ class IngredientInput extends React.Component {
         console.log(err);
       });
   }
-  addIngredient(event) {
-    event.preventDefault();
+  handleSuggestions(e) {
+    let newState = this.state;
+    let focus = this.state.suggestionFocus;
+    const suggestions = this.state.suggestions;
+
+    switch(e.key) {
+      case 'ArrowUp':// move focus up by one
+        newState.suggestionFocus = (focus-1+suggestions.length)%suggestions.length;
+        break;
+
+      case 'ArrowDown':// move focus down by one
+        newState.suggestionFocus = (focus+1)%suggestions.length;
+        break;
+
+      case 'Enter':// add selected suggestion to recipe
+        e.preventDefault();// prevent form from submitting
+        this.setState({activeInput: suggestions[focus]});
+        this.addIngredient();
+        break;
+
+      default:
+        break;
+    }
+    this.setState(newState);
+  }
+  addIngredient() {
     let newState = this.state;
 
     let newIngredient = {
       name: this.state.activeInput,
-      quantity: '',
+      quantity: this.state.activeQuantity,
       unit: this.state.selectedUnit,
     };
-    if(this.state.ingredients.filter(ingredient => {debugger; return ingredient.name == newIngredient.name})){
+    if(this.state.ingredients.filter(ingredient => {return ingredient.name == newIngredient.name})){
       newState.ingredients.push(newIngredient);
       this.setState(newState);  
     }
@@ -116,7 +153,11 @@ class IngredientInput extends React.Component {
         <div className='ingredients'>
           {this.renderIngredients()}
         </div>
-        <TextInput value={this.state.activeInput} handleChange={this.handleChange} property='activeInput'/>
+        <div className='nameInput'>
+          <label>Add ingredient:
+          <TextInput value={this.state.activeInput} handleChange={this.handleName} events={{onKeyDown: this.handleSuggestions}} property='activeInput'/></label>
+          {this.renderSuggestions()}
+        </div>
         <NumberInput value={this.state.activeQuantity} handleChange={this.handleChange} property='activeQuantity' step={'0.1'}/>
         <SelectInput value={unit} options={options} handleChange={this.handleChange} property='selectedUnit'/>
         <input type='button' value='+' onClick={this.addIngredient}/>
@@ -135,6 +176,23 @@ class IngredientInput extends React.Component {
       );
     });
     return output;
+  }
+  renderSuggestions() {
+    const suggestions = this.state.suggestions;
+    const focus = this.state.suggestionFocus;
+
+    const output = (// add click handler to add suggestion to recipe
+      <div className='suggestions'>{suggestions.map((suggestion, i) => {
+          return (
+            <div className={'suggestion' + ((i === focus) ? ' active' : '')} key={i} onMouseEnter={() => this.setState({suggestionFocus: i})}>
+              <p>{suggestion.name}</p>
+              <input type='hidden' value={suggestion.id}/>
+            </div>
+          )
+        })}
+      </div>
+    )
+    return output
   }
 }
 
