@@ -27,6 +27,20 @@ router.post('/add', function(req, res, next) {
   });
 })
 
+router.post('/delete', function (req, res, next) {
+  IngredientsController.delete(req.body.id, function(err, response) {
+    if (err) return res.json({
+      error: err,
+    });
+
+    res.json({
+      error: err,
+      id: req.body.id,
+      response,
+    });
+  });
+})
+
 router.get('/suggestions', function(req, res, next) {
   IngredientsController.getSuggestions(req.query.i, function(err, suggestions) {
     if (err) return res.json({
