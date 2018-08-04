@@ -16,6 +16,8 @@ class App extends Component {
     }
 
     this.createIngredient = this.createIngredient.bind(this);
+    this.deleteIngredient = this.deleteIngredient.bind(this);
+
     this.createRecipe = this.createRecipe.bind(this);
   }
   componentDidMount() {
@@ -50,6 +52,22 @@ class App extends Component {
       ingredients
     });
   }
+  deleteIngredient(e, id) {
+    axios.post('/api/ingredients/delete', {
+        id
+      }).then(res => {
+        console.log(res)
+        let newIngredients = this.state.ingredients.filter( ingredient => {
+          return ingredient._id !== res.data.id;
+        })
+        
+        let newState = this.state;
+        newState['ingredients'] = newIngredients;
+        this.setState(newState);
+      }).catch(err => {
+        console.log(err);
+      });
+  }
   createRecipe(recipe) {
     let recipes = this.state.recipes;
 
@@ -72,7 +90,7 @@ class App extends Component {
         <h1>Home</h1>
         <div className='ingredient-container'>
           <IngredientForm createIngredient={this.createIngredient}/>
-          <IngredientList ingredients={this.state.ingredients}/>
+          <IngredientList ingredients={this.state.ingredients} deleteIngredient={this.deleteIngredient}/>
         </div>
         <div className='recipie-container'>
           <RecipeForm createRecipe={this.createRecipe}/>
