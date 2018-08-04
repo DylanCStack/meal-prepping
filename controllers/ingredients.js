@@ -26,7 +26,7 @@ exports.delete = function(id, done) {
     if (err) return done(err, null);
 
     done(false, {
-      success: res.deleteCount,
+      success: res.deletedCount,
     })
   })
 }

@@ -19,6 +19,7 @@ class App extends Component {
     this.deleteIngredient = this.deleteIngredient.bind(this);
 
     this.createRecipe = this.createRecipe.bind(this);
+    this.deleteRecipe = this.deleteRecipe.bind(this);
   }
   componentDidMount() {
     axios.get('/api/ingredients')
@@ -56,7 +57,6 @@ class App extends Component {
     axios.post('/api/ingredients/delete', {
         id
       }).then(res => {
-        console.log(res)
         let newIngredients = this.state.ingredients.filter( ingredient => {
           return ingredient._id !== res.data.id;
         })
@@ -84,6 +84,22 @@ class App extends Component {
       recipes
     });
   }
+  deleteRecipe(e, id) {
+    axios.post('/api/recipes/delete', {
+        id
+      }).then(res => {
+        console.log(res);
+        let newRecipes = this.state.recipes.filter( ingredient => {
+          return ingredient._id !== res.data.id;
+        })
+        
+        let newState = this.state;
+        newState['recipes'] = newRecipes;
+        this.setState(newState);
+      }).catch(err => {
+        console.log(err);
+      });
+  }
   render() {
     return (
       <div className="App">
@@ -92,9 +108,9 @@ class App extends Component {
           <IngredientForm createIngredient={this.createIngredient}/>
           <IngredientList ingredients={this.state.ingredients} deleteIngredient={this.deleteIngredient}/>
         </div>
-        <div className='recipie-container'>
+        <div className='recipe-container'>
           <RecipeForm createRecipe={this.createRecipe}/>
-          <RecipeList recipes={this.state.recipes}/>
+          <RecipeList recipes={this.state.recipes} deleteRecipe={this.deleteRecipe}/>
         </div>
       </div>
     );

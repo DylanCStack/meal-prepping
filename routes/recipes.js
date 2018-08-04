@@ -27,4 +27,18 @@ router.post('/add', function(req, res, next) {
   });
 })
 
+router.post('/delete', function(req, res, next) {
+  RecipesController.delete(req.body.id, function(err, response) {
+    if (err) return res.json({
+      error: err,
+    });
+
+    res.json({
+      error: err,
+      id: req.body.id,
+      response
+    });
+  });
+})
+
 module.exports = router;

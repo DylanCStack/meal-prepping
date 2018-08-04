@@ -1,4 +1,5 @@
 import React from 'react';
+import ButtonInput from './forms/inputs/ButtonInput';
 
 export default class RecipeList extends React.Component {
   constructor(props) {
@@ -9,7 +10,11 @@ export default class RecipeList extends React.Component {
     return (
       <React.Fragment>
         {this.props.recipes.map((recipe, i)=>{
-          return <p key={i}>{recipe.title}</p>;
+          return (
+            <div key={i}>
+              <p key={i}>{recipe.title}</p> <ButtonInput text='Delete' value={recipe._id} handleClick={this.props.deleteRecipe}/>
+            </div>
+          );
         })}
       </React.Fragment>
     );
