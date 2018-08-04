@@ -38,63 +38,40 @@ class App extends Component {
       });
   }
   createIngredient(ingredient) {
-    let ingredients = this.state.ingredients;
-
-    ingredients.push(ingredient);
-    axios.post('/api/ingredients/add', {
-        name: ingredient.name
-      })
-      .then(res => {
-
-      }).catch(err => {
-        console.log(err);
-      });
-    this.setState({
-      ingredients
-    });
+    this.createEntity('/api/ingredients/add', 'ingredients', ingredient);
   }
   deleteIngredient(e, id) {
-    axios.post('/api/ingredients/delete', {
-        id
-      }).then(res => {
-        let newIngredients = this.state.ingredients.filter( ingredient => {
-          return ingredient._id !== res.data.id;
-        })
-        
+    this.deleteEntity('/api/ingredients/delete', 'ingredients', id);
+  }
+  createRecipe(recipe) {
+    this.createEntity('/api/recipes/add', 'recipes', recipe);
+  }
+  deleteRecipe(e, id) {
+    this.deleteEntity('/api/recipes/delete', 'recipes', id);
+  }
+  createEntity(endpoint, property, entity) {
+    axios.post(endpoint, entity)
+      .then(res => {
+        let list = this.state[property];
+        list.push(entity);
         let newState = this.state;
-        newState['ingredients'] = newIngredients;
+
+        newState[property] = list
         this.setState(newState);
       }).catch(err => {
         console.log(err);
-      });
-  }
-  createRecipe(recipe) {
-    let recipes = this.state.recipes;
-
-    recipes.push(recipe);
-    axios.post('/api/recipes/add', {
-        title: recipe.title
-      })
-      .then(res => {
-
-      }).catch(err => {
-        console.log(err);
-    });
-    this.setState({
-      recipes
     });
   }
-  deleteRecipe(e, id) {
-    axios.post('/api/recipes/delete', {
+  deleteEntity(endpoint, property, id) {
+    axios.post(endpoint, {
         id
       }).then(res => {
-        console.log(res);
-        let newRecipes = this.state.recipes.filter( ingredient => {
-          return ingredient._id !== res.data.id;
+      let newList = this.state[property].filter( entity => {
+        return entity._id !== res.data.id;
         })
         
         let newState = this.state;
-        newState['recipes'] = newRecipes;
+      newState[property] = newList;
         this.setState(newState);
       }).catch(err => {
         console.log(err);
