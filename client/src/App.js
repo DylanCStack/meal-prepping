@@ -66,12 +66,12 @@ class App extends Component {
     axios.post(endpoint, {
         id
       }).then(res => {
-      let newList = this.state[property].filter( entity => {
-        return entity._id !== res.data.id;
+        let newList = this.state[property].filter( entity => {
+          return entity._id !== res.data.id;
         })
-        
+
         let newState = this.state;
-      newState[property] = newList;
+        newState[property] = newList;
         this.setState(newState);
       }).catch(err => {
         console.log(err);
