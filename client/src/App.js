@@ -2,10 +2,14 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import './styles/App.css';
 
+import Home from './components/Home';
 import IngredientList from './components/IngredientList';
 import IngredientForm from './components/forms/IngredientForm';
 import RecipeList from './components/RecipeList';
 import RecipeForm from './components/forms/RecipeForm';
+
+import {Route, Switch, Link} from 'react-router-dom';
+import NavAuth from './components/NavAuth';
 
 class App extends Component {
   constructor(props) {
@@ -79,16 +83,23 @@ class App extends Component {
   }
   render() {
     return (
-      <div className="App">
-        <h1>Home</h1>
-        <div className='ingredient-container'>
-          <IngredientForm createIngredient={this.createIngredient}/>
-          <IngredientList ingredients={this.state.ingredients} deleteIngredient={this.deleteIngredient}/>
-        </div>
-        <div className='recipe-container'>
-          <RecipeForm createRecipe={this.createRecipe}/>
-          <RecipeList recipes={this.state.recipes} deleteRecipe={this.deleteRecipe}/>
-        </div>
+      <div className="">
+        <nav>
+          <Link to="/">Home</Link>
+          <Link to="/recipes/new">Add a recipe</Link>
+          <Link to="/recipes">View recipes</Link>
+          <input type="text" placeholder="Search"/>
+          <NavAuth/>
+        </nav>
+        <Switch>
+          <Route exact path="/" component={Home}/>
+          <Route exact path="/recipes" render={props => <RecipeList {...props} recipes={this.state.recipes}/>}/>
+          <Route exact path="/recipes/new" render={ props => <RecipeForm {...props} createRecipe={this.createRecipe}/>}/>
+          {/* <Route exact path="/recipe/" component={Recipe}/> */}
+        </Switch>
+        <footer>
+
+        </footer>
       </div>
     );
   }
