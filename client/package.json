@@ -20,7 +20,13 @@
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "build-css": "node-sass-chokidar src/ -o src/",
-    "watch-css": "npm run build-css && node-sass-chokidar src/ -o src/ --watch --recursive"
+    "watch-css": "npm run build-css && node-sass-chokidar src/ -o src/ --watch --recursive",
+    "create-symlinks": "rm -rf ./node_modules/shared && mkdir ./node_modules/shared/ && ln-cli '../shared' --path './node_modules' --force",
+    "prestart": "npm run create-symlinks",
+    "prebuild": "npm run create-symlinks"
   },
-  "proxy": "http://localhost:3001"
+  "proxy": "http://localhost:3001",
+  "devDependencies": {
+    "ln-cli": "^1.0.1"
+  }
 }
