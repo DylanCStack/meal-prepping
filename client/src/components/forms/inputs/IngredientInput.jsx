@@ -74,7 +74,6 @@ class IngredientInput extends React.Component {
       suggestions: [],
       suggestionFocus: 0,
       showSuggestions: true,
-      ingredients: [],
     };
     this.handleChange = this.props.handleChange.bind(this);
     this.handleName = this.handleName.bind(this);
