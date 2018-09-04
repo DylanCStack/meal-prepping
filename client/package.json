@@ -21,7 +21,7 @@
     "eject": "react-scripts eject",
     "build-css": "node-sass-chokidar src/ -o src/",
     "watch-css": "npm run build-css && node-sass-chokidar src/ -o src/ --watch --recursive",
-    "create-symlinks": "rm -rf ./node_modules/shared && mkdir ./node_modules/shared/ && ln-cli '../shared' --path './node_modules' --force",
+    "create-symlinks": "rm -rf ./src/shared && mkdir ./src/shared && ln-cli '../shared' --path './src' --force",
     "prestart": "npm run create-symlinks",
     "prebuild": "npm run create-symlinks"
   },
