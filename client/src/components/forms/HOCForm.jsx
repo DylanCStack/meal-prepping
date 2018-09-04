@@ -9,7 +9,7 @@ export default function HOCForm(WrappedForm) {
 
     handleChange(value, property, index) {
       let newState = this.state;
-      if(index != undefined) {
+      if(index !== undefined) {
         newState[property][index] = value;
       } else {
         newState[property] = value;

@@ -2,7 +2,6 @@ import React from 'react';
 import HOCForm from './HOCForm';
 import TextInput from '../forms/inputs/TextInput';
 import IngredientInput from '../forms/inputs/IngredientInput';
-import Recipe from '../../models/Recipe';
 
 class RecipeForm extends React.Component {
   constructor(props){
@@ -57,8 +56,8 @@ class RecipeForm extends React.Component {
   addIngredient(newIngredient) {
     let newState = this.state;
 
-    let duplicates = this.state.ingredients.filter(ingredient => ingredient.name == newIngredient.name);
-    if(duplicates.length == 0){
+    let duplicates = this.state.ingredients.filter(ingredient => ingredient.name === newIngredient.name);
+    if(duplicates.length === 0){
       newState.ingredients.push(newIngredient);
     this.setState(newState);
     } else {
@@ -68,7 +67,7 @@ class RecipeForm extends React.Component {
 
   removeIngredient(ingredientToRemove) {
     let newState = this.state;
-    newState.ingredients = this.state.ingredients.filter(ingredient => ingredient != ingredientToRemove);
+    newState.ingredients = this.state.ingredients.filter(ingredient => ingredient !== ingredientToRemove);
     this.setState(newState);
   }
 
